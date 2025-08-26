@@ -1,0 +1,32 @@
+pipeline{
+    agent any
+    stages{
+        stage("first stage: here we checkout the code from github"){
+            steps{
+                git 'https://github.com/akshu20791/addressbook-cicd-project'
+                echo "cloning the code in jenkins workspace"
+            }
+        }
+        stage("compile the code by akash"){
+            steps{
+                sh 'mvn compile'
+                echo "compiling the project"
+            }
+        }
+        stage("running the test case"){
+            steps{
+                sh 'mvn test'
+            }
+        }
+        stage("packaging the project"){
+            steps{
+                sh 'mvn package'
+            }
+        }
+        stage("depoy the project"){
+            steps{
+                sh 'sudo cp /var/lib/jenkins/workspace/akash/target/addressbook.war /home/ubuntu/apache-tomcat-9.0.108/webapps'
+            }
+        }
+    }
+}
