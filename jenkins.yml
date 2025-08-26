@@ -1,0 +1,20 @@
+---
+- hosts: [ansiblegroup]
+  become: true
+
+  tasks:
+    - name: Ensure wget is installed
+      ansible.builtin.package:
+        name: wget
+        state: present
+
+    - name: Download Jenkins installation script
+      ansible.builtin.get_url:
+        url: "https://raw.githubusercontent.com/akshu20791/Deployment-script/refs/heads/main/jenkins.sh"
+        dest: "/home/devops/jenkins.sh"
+        mode: '0755'
+
+    - name: Run Jenkins installation script
+      ansible.builtin.command: "bash /home/devops/jenkins.sh"
+      args:
+        chdir: /home/devops
